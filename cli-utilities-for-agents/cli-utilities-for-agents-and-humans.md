@@ -10,7 +10,7 @@
 - **Documentation** (help, README, generated reference, output/error contract, `AGENTS.md`, changelog, CI drift checks) is covered in the sibling doc `cli-documentation-for-agents-and-humans.md`.
 - **Ship a skill next to the CLI.** A short `SKILL.md` that teaches the CLI is the cheapest way to make Claude good at it — measured to beat loading MCP tool schemas by a wide margin in token cost.
 - **For Node:** `node:util` `parseArgs` for small tools; Commander or citty for most; oclif for big plugin-style CLIs; **incur** if "agent-first" is the main goal (Zod schemas, `--json`/`--format`, auto-generated skills + MCP). Test by spawning the real binary with execa + Vitest (or `node:test`), and audit with `cli-agent-lint`.
-- **Claude skills worth installing:** Liran Tal's `nodejs-cli-best-practices` (Node implementation and audit), steipete's `create-cli` (spec-first CLI design on clig.dev), and compound-engineering's `cli-agent-readiness-reviewer` (agent-readiness review). Add Anthropic's `skill-creator` to write and eval the companion skill.
+- **Claude skills worth installing:** Liran Tal's `nodejs-cli-best-practices` (Node implementation and audit), steipete's `create-cli` (spec-first CLI design on clig.dev), and `cli-agent-readiness-reviewer` (agent-readiness review). Every removed the reviewer from its compound-engineering plugin in May 2026, so use the last MIT-licensed version, which is saved in this folder's `skills/`. Add Anthropic's `skill-creator` to write and eval the companion skill.
 - **Auditing an existing CLI:** `tech-debt-audit` for codebase health, `nodejs-cli-best-practices` in audit mode for CLI practices, and `cli-agent-readiness-reviewer` + `cli-agent-lint`/`anc` for agent readiness. See section 6.
 
 ---
@@ -150,7 +150,7 @@ One measurement found a ~480-token skill paid back its fixed cost after ~24 oper
 |---|---|---|
 | **nodejs-cli-best-practices** | Liran Tal, via tessl registry / his repo | Build or **audit** a Node CLI against ~40 practices. Has audit and "development guide" modes. Its evals showed 41% fewer tokens and 31% faster on "build a new CLI" vs no skill. **Top pick for Node implementation.** |
 | **create-cli** | Peter Steinberger, `steipete/agent-scripts` (MIT; also on ClawHub, ~4K downloads) | **Replaces the clig.dev skill.** Short (~90 lines) and spec-first. It reads a bundled clig.dev rubric (`references/cli-guidelines.md`), asks a few clarifying questions, then outputs a command tree + usage synopsis, a flags table, output rules (stdout/stderr, TTY, `--json`/`--plain`), an exit-code map, safety rules (`--dry-run`, `--force`, `--no-input`), and config precedence. Also meant for refactoring an existing CLI's surface. Not agent-specific; pair it with the reviewer below. |
-| **cli-agent-readiness-reviewer** | EveryInc **compound-engineering** plugin (added in v2.56.0, Mar 2026); standalone copy at `udecode/plate` on skills.sh | **The agent layer.** Reviews CLI source code, plans, or specs against 7 agent-readiness principles. Findings are tagged Blocker / Friction / Optimization, evaluated per command type. It finds entry points itself (Commander, yargs, oclif, `bin` field). Works on a new spec (step 2 of the workflow) and on existing code. |
+| **cli-agent-readiness-reviewer** | Originally in EveryInc's **compound-engineering** plugin (Mar 2026). **Removed upstream on May 1, 2026** (PR #734, which said assessing CLI readiness was too much work for its value). There is no replacement in the plugin. Use the last MIT version (commit `2d207574`), converted to a skill in this folder's `skills/cli-agent-readiness-reviewer/`. Unofficial copies: `udecode/plate` on skills.sh, the `spec-first` npm package. | **The agent layer.** Reviews CLI source code, plans, or specs against 7 agent-readiness principles. Findings are tagged Blocker / Friction / Optimization, evaluated per command type. It finds entry points itself (Commander, yargs, oclif, `bin` field). Works on a new spec (step 2 of the workflow) and on existing code. |
 
 Optional and situational:
 
@@ -164,7 +164,8 @@ Optional and situational:
 | **skill-creator** | Anthropic (`claude-plugins-official`, also bundled in Claude) | Write the *companion* skill for your CLI, then run trigger/behavior evals on it. |
 | **mcp-builder** / **mcp-server-dev** (`build-mcp-server`, `build-mcpb`) | Anthropic (`anthropics/skills`, `claude-plugins-official`) | If you also want an MCP server wrapping the same core library. |
 | **plugin-dev** | Anthropic `claude-plugins-official` | Package the CLI's skill(s), slash commands, and hooks as a Claude Code plugin for your team. |
-| **docs-sync-audit**, **engineering:documentation**, **engineering:testing-strategy** | Already available in your setup | Keep README/help in sync with code; plan the test matrix. |
+| **docs-sync-audit** | GitHub's `github/awesome-copilot` repo (`skills/docs-sync-audit`, MIT) | Read-only documentation drift audit: compares what READMEs, setup and API docs, changelogs, examples, and CLI usage claim against what the code does, with evidence. Ships a small Python helper script; read it before installing. |
+| **engineering** plugin (`documentation`, `testing-strategy`, `tech-debt`, `code-review`) | Anthropic's `anthropics/knowledge-work-plugins` (`claude plugin marketplace add anthropics/knowledge-work-plugins`, then `claude plugin install engineering@knowledge-work-plugins`) | General-purpose doc writing, test planning, tech-debt triage, and per-PR code review. Lighter than the CLI-specific skills. |
 
 > Caveat: third-party skills can execute code and steer the agent. Read every `SKILL.md` and its scripts before installing, especially for a work machine.
 
@@ -311,7 +312,7 @@ Audit in three separate passes, because they need different tools:
 
 Alternative: `technical-debt` (`AsyrafHussin/agent-skills`), with 42 rules across 10 categories and an effort-by-impact debt ledger.
 
-You already have `engineering:tech-debt`, `engineering:code-review`, and `docs-sync-audit`. They're fine for follow-up work and per-PR checks. They aren't designed for a citable whole-repo baseline.
+Lighter alternatives: Anthropic's `engineering` plugin (`tech-debt`, `code-review`) and `docs-sync-audit` (from `github/awesome-copilot`) are fine for follow-up work and per-PR checks. They aren't designed for a citable whole-repo baseline.
 
 **Ground truth tools** (run these yourself or let the skill run them):
 
@@ -389,7 +390,7 @@ Legacy commands often bundle several steps (prompt → fetch → transform → w
 
 **If the CLI has a very large README:** steps 2–5 can run one command group at a time, alongside splitting the README into per-group READMEs. Set whole-repo conventions first, then for each group: **migrate** its README section (content only), **audit** that group's code and docs (findings only), and **fix** in separate PRs. See `cli-documentation-for-agents-and-humans.md` §11 and the `cli-group-readme-migrate-audit` skill.
 
-> Work-machine caution: all of these are third-party. Read each `SKILL.md` (and any scripts) before installing. For compound-engineering you can copy just the single reviewer file instead of installing the whole plugin (~29 agents).
+> Work-machine caution: all of these are third-party. Read each `SKILL.md` (and any scripts) before installing. The current compound-engineering plugin no longer includes the CLI reviewer, so install the saved copy from `skills/` rather than the plugin.
 
 ---
 
@@ -425,6 +426,9 @@ Legacy commands often bundle several steps (prompt → fetch → transform → w
 - [skills.sh: cli-design (clig.dev condensed)](https://skills.sh/michaelliv/dotskills/cli-design)
 - [steipete/agent-scripts: create-cli SKILL.md](https://github.com/steipete/agent-scripts/blob/main/skills/create-cli/SKILL.md)
 - [EveryInc compound-engineering plugin](https://github.com/everyinc/compound-engineering-plugin) · [v2.56.0 release (CLI agent-readiness reviewer)](https://newreleases.io/project/github/EveryInc/compound-engineering-plugin/release/cli-v2.56.0)
+- [compound-engineering PR #734: remove cli-readiness reviewer agents](https://github.com/EveryInc/compound-engineering-plugin/pull/734)
+- [github/awesome-copilot (docs-sync-audit skill)](https://github.com/github/awesome-copilot)
+- [anthropics/knowledge-work-plugins (engineering plugin)](https://github.com/anthropics/knowledge-work-plugins)
 - [skills.sh: cli-agent-readiness-reviewer (standalone copy)](https://skills.sh/udecode/plate/cli-agent-readiness-reviewer)
 - [agentnative (anc) CLI linter](https://docs.rs/crate/agentnative/0.1.2/source/README.md)
 - [ksimback/tech-debt-skill](https://github.com/ksimback/tech-debt-skill)

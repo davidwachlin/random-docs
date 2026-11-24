@@ -432,7 +432,7 @@ Or use the Claude Agent SDK for a scripted loop. CLI-specific metrics worth addi
 There are three recommended skills:
 - `nodejs-cli-best-practices` (Liran Tal);
 - `create-cli` (steipete);
-- `cli-agent-readiness-reviewer` (compound-engineering).
+- `cli-agent-readiness-reviewer` (from Every's compound-engineering plugin; removed upstream in May 2026, so use the saved last version in `skills/`).
 
 Coverage, item by item (✅ covered, ◐ partial, ❌ not covered):
 

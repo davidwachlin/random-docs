@@ -286,7 +286,7 @@ For a hosted docs site, an `llms.txt` index (links to the reference, contract, a
 | Help text changes are intentional | Snapshot tests of every `--help` (execa + Vitest), as in the main doc |
 | README code blocks from real files | `embedme --verify README.md`, or `markdown-code check`. Both fail CI on drift. |
 | README commands actually run | Extract shell blocks and run them against a test environment, asserting exit code 0. Doc-testing tools exist (`mdoctest`, `readme-ci`), but a small script with execa is enough for a CLI. |
-| Docs match behavior (semantic drift) | `docs-sync-audit` skill (you have it) on PRs that touch commands; `tech-debt-audit` flags documentation drift on full audits |
+| Docs match behavior (semantic drift) | `docs-sync-audit` skill (from `github/awesome-copilot`) on PRs that touch commands; `tech-debt-audit` flags documentation drift on full audits |
 | Every command has examples and a docs link | A unit test that walks `program.commands` and asserts the help includes "Examples:" and a URL |
 | Every error code is documented | A test that every code in the error catalog appears in `docs/errors.md` (or generate the file, then diff-check it) |
 
@@ -374,13 +374,13 @@ Work through the findings in their own PRs. Behavior changes update the help sna
 
 ## 12. Do the recommended skills cover this?
 
-| Topic | nodejs-cli-best-practices | create-cli | cli-agent-readiness-reviewer | Already in your setup |
+| Topic | nodejs-cli-best-practices | create-cli | cli-agent-readiness-reviewer | Other skills |
 |---|---|---|---|---|
 | Good `--help` with examples | ✅ §1.9 | ✅ (help text, usage synopsis) | ✅ (progressive help discovery) | — |
 | Error codes mapped to docs | ✅ §6.1 | ◐ (exit-code map) | ◐ (actionable errors) | — |
 | Bug-report path | ✅ §6.5 | ❌ | ❌ | — |
 | Version and changelog docs | ✅ §9.1–9.7 (version flag, semver, backward compatibility, update version docs) | ❌ | ❌ | — |
-| README structure | ❌ | ❌ | ❌ | `engineering:documentation` (generic) |
+| README structure | ❌ | ❌ | ❌ | `documentation` from Anthropic's `engineering` plugin (generic) |
 | Generated reference / man pages | ❌ | ◐ (its spec output *is* a reference doc) | ❌ | — |
 | Output-contract and schema docs | ❌ | ◐ (output rules in the spec) | ❌ | — |
 | `AGENTS.md`/`CLAUDE.md` for the repo | ❌ | ❌ | ❌ | — |
@@ -403,3 +403,4 @@ Work through the findings in their own PRs. Behavior changes update the help sna
 - [InfoQ: Changesets v3 release](https://infoq.com/news/2026/09/changesets-v3-release) · [Release automation with GitHub Actions](https://www.tenki.cloud/blog/release-automation-github-actions)
 - [embedme](https://www.npmjs.com/package/embedme) · [markdown-code](https://socket.dev/npm/package/markdown-code) · [mdoctest](https://pypi.org/project/mdoctest/) · [readme-ci](https://pypi.org/project/readme-ci/)
 - [Anthropic: Writing effective tools for agents](https://www.anthropic.com/engineering/writing-tools-for-agents)
+- [github/awesome-copilot (docs-sync-audit skill)](https://github.com/github/awesome-copilot) · [anthropics/knowledge-work-plugins (engineering plugin)](https://github.com/anthropics/knowledge-work-plugins)
