@@ -14,6 +14,7 @@ Copy a skill's folder into `~/.claude/skills/` or a repo's `.claude/skills/` to 
 
 | Skill | What it does |
 |---|---|
+| [skills/cli-agent-efficiency](skills/cli-agent-efficiency/SKILL.md) | Designs, reviews, or evaluates a CLI for agent token efficiency, using Anthropic's tool guidance translated to CLIs: a 16-item checklist with before/after patterns, default budgets, decisions on which chains to pre-define, and an eval runner (`scripts/run-evals.mjs`, headless Claude Code) that reports pass rate, turns, tool calls, errors, and tokens. |
 | [skills/cli-group-readme-migrate-audit](skills/cli-group-readme-migrate-audit/SKILL.md) | Splits one command group's section out of a large CLI README into its own group README (content only), then audits that group's code and docs (findings only). |
 | [skills/cli-agent-readiness-reviewer](skills/cli-agent-readiness-reviewer/SKILL.md) | Reviews CLI source, plans, or specs for agent readiness against 7 principles (Blocker/Friction/Optimization). This is the last MIT version from Every's compound-engineering plugin (commit `2d207574`), which removed it in May 2026 (PR #734). Not maintained upstream. |
 

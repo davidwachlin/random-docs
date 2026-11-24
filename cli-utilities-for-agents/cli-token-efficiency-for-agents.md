@@ -479,12 +479,14 @@ Coverage, item by item (✅ covered, ◐ partial, ❌ not covered):
 
 `nodejs-cli-best-practices` is about good Node CLI engineering in general. Its own reference has no coverage of token efficiency, pagination, field selection, or truncation. It's the right skill for implementation quality, not for agent efficiency.
 
-**Recommendation:** Keep the three skills, and add a small custom skill (for example `cli-agent-efficiency`) that encodes this document:
+**Recommendation:** Keep the three skills, and add the custom `cli-agent-efficiency` skill (in this folder's `skills/cli-agent-efficiency/`), which encodes this document:
 - Part 1 as a design and review checklist with the before/after patterns, including the chain levels and the promotion rule;
 - Part 3 as defaults;
 - Part 2 as an eval procedure with a script that runs tasks headlessly and summarizes tokens, calls, exit codes, and success.
 
 That fills the six gaps above and gives your legacy-CLI audit a token-efficiency pass that the other skills don't run.
+
+To install it, copy the `cli-agent-efficiency` folder (`SKILL.md`, `references/`, `scripts/`) into `~/.claude/skills/` or the CLI repo's `.claude/skills/`. The eval runner needs Node 18+ and the `claude` CLI on PATH. Use it with dev/QA environments only.
 
 ---
 

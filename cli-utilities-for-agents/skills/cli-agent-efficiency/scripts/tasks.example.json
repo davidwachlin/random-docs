@@ -1,0 +1,14 @@
+[
+  {
+    "id": "deploy-rollback",
+    "prompt": "Checkout errors in the QA environment spiked after the last deploy. Using only the acme CLI, find that deploy, confirm it's the cause, and roll it back. Reply with the rolled-back version.",
+    "verify": "acme deploys list --env qa --limit 1 --fields version --format tsv | grep -q '^v41$'",
+    "heldOut": false
+  },
+  {
+    "id": "duplicate-charges",
+    "prompt": "Customer cus_88 says they were charged three times on Nov 20 in dev. Using only the acme CLI, confirm it and list any other customers affected. Reply with JSON {\"charges\": [...], \"otherCustomers\": [...]}.",
+    "verify": "test -f /tmp/acme-eval/duplicate-charges.expected",
+    "heldOut": true
+  }
+]

@@ -386,7 +386,7 @@ Work through the findings in their own PRs. Behavior changes update the help sna
 | `AGENTS.md`/`CLAUDE.md` for the repo | ❌ | ❌ | ❌ | — |
 | Doc drift detection | ❌ | ❌ | ❌ | `docs-sync-audit`; `tech-debt-audit` (documentation drift) |
 
-**Verdict:** help text and error and version hygiene are well covered. README structure, generated references, contract documentation, `AGENTS.md`, and CI drift checks aren't in any CLI skill. `docs-sync-audit` handles detection after the fact. If you build the custom `cli-agent-efficiency` skill suggested in the token-efficiency doc, sections 4–9 here belong in it (or in a small sibling `cli-docs` skill), especially the README template, the `AGENTS.md` contract rules, and the CI checks table. The §11 process has its own skill (`cli-group-readme-migrate-audit`) so each group migration runs the same way.
+**Verdict:** help text and error and version hygiene are well covered. README structure, generated references, contract documentation, `AGENTS.md`, and CI drift checks aren't in any CLI skill. `docs-sync-audit` handles detection after the fact. The custom `cli-agent-efficiency` skill (in `skills/`) covers token efficiency, not documentation. If you want a docs skill too, sections 4–9 here belong in a small `cli-docs` skill, especially the README template, the `AGENTS.md` contract rules, and the CI checks table. The §11 process has its own skill (`cli-group-readme-migrate-audit`) so each group migration runs the same way.
 
 ---
 
